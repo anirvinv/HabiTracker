@@ -8,7 +8,7 @@ export default function createHabit() {
 	const router = useRouter();
 	let habitName = useRef(null);
 	let habitDesc = useRef(null);
-	let days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+	const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
 	let [week, setWeek] = useState([
 		false,
 		false,
@@ -40,7 +40,7 @@ export default function createHabit() {
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(JSON.stringify(data));
-				router.replace("/");
+				router.push("/");
 			});
 	};
 
@@ -88,7 +88,7 @@ export default function createHabit() {
 				/>
 
 				<button
-					className="p-5 mt-4 text-lg bg-white rounded transition-all ease-linear 
+					className="px-3 py-2 mt-4 text-lg bg-white rounded transition-all ease-linear 
                     duration-150 hover:bg-gray-700 hover:text-white"
 					onClick={makeHabit}
 				>

@@ -15,13 +15,15 @@ const habitSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const checkinSchema = new mongoose.Schema({
-	habit_id: { type: String, required: true },
-	date: { type: Date, default: Date.now },
-	description: { type: String, default: "" },
-	notes: { type: String, default: "" },
-	// mongoose automatically adds _id to schemas
-});
+const checkinSchema = new mongoose.Schema(
+	{
+		habit_id: { type: String, required: true },
+		description: { type: String, default: "" },
+		notes: { type: String, default: "" },
+		// mongoose automatically adds _id to schemas
+	},
+	{ timestamps: true }
+);
 
 const Habit = mongoose.model("Habit", habitSchema);
 const Checkin = mongoose.model("Checkin", checkinSchema);
