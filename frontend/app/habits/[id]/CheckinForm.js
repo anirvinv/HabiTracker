@@ -1,12 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 
 export default function CheckinForm({ fetchURL, lastCheckinDate }) {
 	const router = useRouter();
 	let notes = useRef(null);
+	let checkinButton = useRef(null);
+
 	function alreadyCheckedIn() {
+		console.log(lastCheckinDate);
 		if (lastCheckinDate == null) {
 			return false;
 		}
@@ -17,6 +20,7 @@ export default function CheckinForm({ fetchURL, lastCheckinDate }) {
 	}
 
 	function checkin() {
+		// checkinButton.current.setAttribute("disabled", true);
 		if (alreadyCheckedIn()) {
 			alert("Already checked in today");
 			return;
@@ -34,20 +38,22 @@ export default function CheckinForm({ fetchURL, lastCheckinDate }) {
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(JSON.stringify(data));
+				// checkinButton.current.setAttribute("disabled", false);
 				router.refresh();
 			});
 	}
 
 	return (
 		<div className="flex flex-wrap">
-			<div
+			<button
+				ref={checkinButton}
 				onClick={checkin}
 				className="flex justify-center items-center bg-white p-3 rounded-full w-fit h-fit
                     hover:bg-slate-800 hover:text-white transition-all ease-linear duration-100 hover:cursor-pointer"
 			>
 				<AiFillCheckCircle size={35} />
 				<p className="mx-3">Check In</p>
-			</div>
+			</button>
 			<textarea
 				ref={notes}
 				className="outline-none block h-fit w-fit mx-3 px-3 py-1.5 text-base font-normaltext-gray-700 

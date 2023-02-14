@@ -1,5 +1,6 @@
 import uniqid from "uniqid";
 import CheckinForm from "./CheckinForm";
+import UndoButton from "./UndoCheckinButton";
 
 async function getCheckinData(id) {
 	const data = await fetch(process.env.API_URL + "/checkin/" + id);
@@ -80,6 +81,8 @@ export default async function habitID({ params }) {
 							</p>
 							<p>Notes:</p>
 							<p>{checkin.notes}</p>
+							{/* TO DO: the user can undo checkin ONLY if the checkin date is today  */}
+							<UndoButton checkin_id={checkin._id} />
 						</div>
 					);
 				})}

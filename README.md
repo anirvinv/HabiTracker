@@ -14,3 +14,6 @@ Track your habits and checkin everyday to maintain the streak.
 \#4: Calculate streaks based on habit schedule
 Figure out router stuff ==> refetch data when navigating from Create habit to Home page.
 I think router.push() does it?
+
+__ISSUE__:
+If the checkin button is clicked multiple times very quickly, the browser doesnt have enough time to check that the user already signed in
