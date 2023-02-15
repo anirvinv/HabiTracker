@@ -80,12 +80,31 @@ export default async function habitID({ params }) {
       <div className="mt-3 flex flex-wrap">
         {checkinData.map((checkin) => {
           return (
-            <div key={uniqid()} className="p-4 rounded bg-white mr-3">
-              <p className="text-xs font-semibold text-gray-700/40">
+            <div
+              key={uniqid()}
+              className="p-4 rounded bg-white mr-3 w-56 max-h-56"
+            >
+              <p className="text-xs font-semibold text-gray-700/40 ">
                 Checkin Date: {new Date(checkin.createdAt).toLocaleDateString()}
               </p>
               <p>Notes:</p>
-              <p>{checkin.notes}</p>
+              <div
+                className={
+                  "overflow-auto w-full h-1/2" +
+                  (checkin.notes == "" ? " flex items-center h-1/3" : "")
+                }
+              >
+                <p
+                  className={
+                    checkin.notes == ""
+                      ? "h-fit w-full text-center text-gray-700/60"
+                      : ""
+                  }
+                >
+                  {checkin.notes}
+                  {checkin.notes == "" ? "No notes" : ""}
+                </p>
+              </div>
               {/* TO DO: the user can undo checkin ONLY if the checkin date is today  */}
               <UndoButton checkin_id={checkin._id} />
             </div>

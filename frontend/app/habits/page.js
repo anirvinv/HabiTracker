@@ -51,7 +51,7 @@ export default async function Page() {
                 </div>
               </Link>
             </div>
-            <YearlyView checkinIDs={habit.checkin_ids} />
+            <YearlyView checkinIDs={habit.checkin_ids} habit={habit} />
           </div>
         );
       })}

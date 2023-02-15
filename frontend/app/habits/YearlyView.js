@@ -3,8 +3,23 @@
 import { useEffect, useState } from "react";
 import uniqid from "uniqid";
 
-export default function YearlyView({ checkinIDs }) {
+export default function YearlyView({ checkinIDs, habit }) {
   let [year, setYear] = useState(new Date().getFullYear());
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   let [checkinDates, setCheckinDates] = useState(null);
   useEffect(() => {
     let fetchCount = checkinIDs.length;
@@ -32,10 +47,14 @@ export default function YearlyView({ checkinIDs }) {
     }
   }, []);
 
-  let fakeData = [
-    new Date().toLocaleDateString(),
-    new Date(2023, 0, 1).toLocaleDateString(),
-  ];
+  function goToYear(year) {
+    let createdYear = new Date(habit.createdAt).getFullYear();
+    if (year < createdYear) {
+      alert(`${habit.name} created on ` + createdYear);
+      return;
+    }
+    setYear(year);
+  }
 
   function getCalendarMonths() {
     let months = [];
@@ -95,7 +114,7 @@ export default function YearlyView({ checkinIDs }) {
         <button
           className="text-sm text-gray-400/70 mx-1"
           onClick={() => {
-            setYear(year + 1);
+            goToYear(year - 1);
           }}
         >
           {"<"}
@@ -104,37 +123,42 @@ export default function YearlyView({ checkinIDs }) {
         <button
           className="text-sm text-gray-400/70 mx-1"
           onClick={() => {
-            setYear(year - 1);
+            goToYear(year + 1);
           }}
         >
           {">"}
         </button>
       </div>
       <div className="flex flex-wrap bg-white shadow p-5 rounded-b-md">
-        {getCalendarMonths().map((month) => {
+        {getCalendarMonths().map((month, monthidx) => {
           return (
-            <div
-              key={uniqid()}
-              className="grid grid-cols-7 gap-[1px] h-fit mr-3"
-            >
-              {month.map((day) => {
-                if (checkinDates.includes(day)) {
+            <div>
+              <p className="text-xs text-gray-700/70 mb-1">
+                {months[monthidx]}
+              </p>
+              <div
+                key={uniqid()}
+                className="grid grid-cols-7 gap-[1px] h-fit mr-3"
+              >
+                {month.map((day) => {
+                  if (checkinDates.includes(day)) {
+                    return (
+                      <div
+                        key={uniqid()}
+                        className="w-2.5 h-2.5 bg-emerald-500
+                    rounded-full"
+                      ></div>
+                    );
+                  }
                   return (
                     <div
                       key={uniqid()}
-                      className="w-2.5 h-2.5 bg-emerald-500
+                      className="w-2.5 h-2.5 bg-slate-300/50
                     rounded-full"
                     ></div>
                   );
-                }
-                return (
-                  <div
-                    key={uniqid()}
-                    className="w-2.5 h-2.5 bg-slate-300/50
-                    rounded-full"
-                  ></div>
-                );
-              })}
+                })}
+              </div>
             </div>
           );
         })}

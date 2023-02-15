@@ -6,7 +6,8 @@ import { AiFillCheckCircle } from "react-icons/ai";
 export default function CheckinForm({ fetchURL, lastCheckinDate }) {
   const router = useRouter();
   let notes = useRef(null);
-  let checkinButton = useRef(null);
+
+  let [disabled, setDisabled] = useState(false);
 
   function alreadyCheckedIn() {
     console.log(lastCheckinDate);
@@ -20,14 +21,15 @@ export default function CheckinForm({ fetchURL, lastCheckinDate }) {
   }
 
   function checkin() {
-    checkinButton.current.setAttribute("disabled", true);
     // setTimeout(() => {
     //   checkinButton.current.setAttribute("disabled", false);
     // }, 200);
+    setDisabled(true);
     if (alreadyCheckedIn()) {
       alert("Already checked in today");
       return;
     }
+
     fetch(fetchURL, {
       method: "PATCH",
       headers: {
@@ -41,14 +43,14 @@ export default function CheckinForm({ fetchURL, lastCheckinDate }) {
       .then((res) => res.json())
       .then((data) => {
         console.log(JSON.stringify(data));
-        // router.refresh();
+        router.refresh(); // have to speed this up with state instead of refetching everytime
       });
   }
 
   return (
     <div className="flex flex-wrap">
       <button
-        ref={checkinButton}
+        disabled={disabled}
         onClick={checkin}
         className="flex justify-center items-center bg-white p-3 rounded-full w-fit h-fit
                     hover:bg-slate-800 hover:text-white transition-all ease-linear duration-100 hover:cursor-pointer"

@@ -18,6 +18,7 @@ export default function UndoButton({ checkin_id }) {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         router.refresh();
       });
   }
