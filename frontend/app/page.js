@@ -10,6 +10,7 @@ export default async function Home() {
     console.log(process.env.API_URL);
     const res = await fetch(process.env.API_URL + "/habit/all", {
       method: "GET",
+      cache: "no-store",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

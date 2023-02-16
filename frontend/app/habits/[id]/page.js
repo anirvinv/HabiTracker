@@ -1,6 +1,7 @@
 import uniqid from "uniqid";
 import CheckinForm from "./CheckinForm";
 import UndoButton from "./UndoCheckinButton";
+import DeleteButton from "./DeleteHabit";
 
 export default async function habitID({ params }) {
   const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -24,11 +25,14 @@ export default async function habitID({ params }) {
     return data.json();
   }
 
-  if (!data.ok) {
+  if (!data.ok || data == null) {
     return "Page not found";
   }
   const res = await data.json();
 
+  if (res == null) {
+    return "Page not found";
+  }
   let Promises = new Array(res.checkin_ids.length);
   for (let i = 0; i < res.checkin_ids.length; i++) {
     Promises[i] = getCheckinData(res.checkin_ids[i]);
@@ -44,8 +48,8 @@ export default async function habitID({ params }) {
     if (checkinData.length == 1) return 1;
     let streak = 1;
     for (let i = checkinData.length - 1; i >= 1; i--) {
-      let currDate = new Date(checkinData[i].createdAt);
-      let prevDate = new Date(checkinData[i - 1].createdAt);
+      let currDate = new Date(checkinData[i].checkinDate);
+      let prevDate = new Date(checkinData[i - 1].checkinDate);
 
       prevDate.setDate(prevDate.getDate() + 1);
       if (prevDate.toLocaleDateString() !== currDate.toLocaleDateString()) {
@@ -59,14 +63,14 @@ export default async function habitID({ params }) {
     if (checkinData.length == 0) {
       return (
         <CheckinForm
-          lastCheckinDate={null}
+          checkinData={null}
           fetchURL={process.env.API_URL + `/habit/${params.id}`}
         />
       );
     }
     return (
       <CheckinForm
-        lastCheckinDate={checkinData[checkinData.length - 1].createdAt}
+        checkinData={checkinData}
         fetchURL={process.env.API_URL + `/habit/${params.id}`}
       />
     );
@@ -74,9 +78,11 @@ export default async function habitID({ params }) {
 
   return (
     <div>
-      <p className="text-3xl">{res.name}</p>
+      <div className="flex items-center">
+        <p className="text-3xl">{res.name}</p>
+        <DeleteButton habit_id={params.id} />
+      </div>
       <p className="text-xl mt-3">Checkins</p>
-
       <div className="mt-3 flex flex-wrap">
         {checkinData.map((checkin) => {
           return (
@@ -85,7 +91,8 @@ export default async function habitID({ params }) {
               className="p-4 rounded bg-white mr-3 w-56 max-h-56"
             >
               <p className="text-xs font-semibold text-gray-700/40 ">
-                Checkin Date: {new Date(checkin.createdAt).toLocaleDateString()}
+                Checkin Date:{" "}
+                {new Date(checkin.checkinDate).toLocaleDateString()}
               </p>
               <p>Notes:</p>
               <div
@@ -134,7 +141,6 @@ export default async function habitID({ params }) {
           );
         })}
       </div>
-
       <p className="text-xl mt-5 mb-3">
         Current Streak: {getCurrentStreak() > 1 ? "🔥" : ""}
         {getCurrentStreak()}

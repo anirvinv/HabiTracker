@@ -27,7 +27,7 @@ export default function UndoButton({ checkin_id }) {
     <button
       disabled={disabled}
       onClick={deleteCheckin}
-      className="text-xs shadow shadow-gray-300 transition-all hover:bg-gray-800 mt-3 p-2 hover:text-white rounded-full"
+      className="text-xs shadow shadow-gray-300 transition-all hover:bg-gray-800 mt-3 p-2 hover:text-white rounded-full mb-1"
     >
       Undo Checkin
     </button>

@@ -40,7 +40,10 @@ const SideBarIcon = ({ icon, href, hoverText }) => {
 
 export default function Sidebar() {
   return (
-    <div className="fixed top-0 left-0 h-screen w-24 flex flex-col text-white bg-gray-800 m-0 shadow-lg justify-between">
+    <div
+      className="fixed top-0 left-0 h-screen w-24 flex flex-col text-white bg-gray-800
+         m-0 shadow-lg justify-between"
+    >
       <div>
         <SideBarIcon
           icon={<AiFillHome size={50} />}

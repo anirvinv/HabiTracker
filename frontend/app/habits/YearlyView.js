@@ -5,6 +5,7 @@ import uniqid from "uniqid";
 
 export default function YearlyView({ checkinIDs, habit }) {
   let [year, setYear] = useState(new Date().getFullYear());
+
   const months = [
     "Jan",
     "Feb",
@@ -29,6 +30,7 @@ export default function YearlyView({ checkinIDs, habit }) {
     }
     for (let i = 0; i < checkinIDs.length; i++) {
       fetch(process.env.API_URL + "/checkin/" + checkinIDs[i], {
+        cache: "force-cache",
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -38,21 +40,16 @@ export default function YearlyView({ checkinIDs, habit }) {
         .then((res) => res.json())
         .then((data) => {
           fetchCount--;
-          dates[i] = new Date(data.createdAt).toLocaleDateString();
+          dates[i] = new Date(data.checkinDate).toLocaleDateString();
           if (fetchCount == 0) {
             setCheckinDates(dates);
-            console.log(dates);
+            // console.log(dates);
           }
         });
     }
   }, []);
 
   function goToYear(year) {
-    let createdYear = new Date(habit.createdAt).getFullYear();
-    if (year < createdYear) {
-      alert(`${habit.name} created on ` + createdYear);
-      return;
-    }
     setYear(year);
   }
 
@@ -132,7 +129,7 @@ export default function YearlyView({ checkinIDs, habit }) {
       <div className="flex flex-wrap bg-white shadow p-5 rounded-b-md">
         {getCalendarMonths().map((month, monthidx) => {
           return (
-            <div>
+            <div key={uniqid()}>
               <p className="text-xs text-gray-700/70 mb-1">
                 {months[monthidx]}
               </p>
@@ -141,20 +138,16 @@ export default function YearlyView({ checkinIDs, habit }) {
                 className="grid grid-cols-7 gap-[1px] h-fit mr-3"
               >
                 {month.map((day) => {
-                  if (checkinDates.includes(day)) {
-                    return (
-                      <div
-                        key={uniqid()}
-                        className="w-2.5 h-2.5 bg-emerald-500
-                    rounded-full"
-                      ></div>
-                    );
-                  }
                   return (
                     <div
                       key={uniqid()}
-                      className="w-2.5 h-2.5 bg-slate-300/50
-                    rounded-full"
+                      className={
+                        "w-2.5 h-2.5 " +
+                        (checkinDates.includes(day)
+                          ? "bg-emerald-500"
+                          : "bg-slate-300/50") +
+                        ` rounded-full`
+                      }
                     ></div>
                   );
                 })}
