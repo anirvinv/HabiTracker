@@ -28,14 +28,14 @@ export default async function habitID({ params }) {
   if (!data.ok || data == null) {
     return "Page not found";
   }
-  const res = await data.json();
+  const habit = await data.json();
 
-  if (res == null) {
+  if (habit == null) {
     return "Page not found";
   }
-  let Promises = new Array(res.checkin_ids.length);
-  for (let i = 0; i < res.checkin_ids.length; i++) {
-    Promises[i] = getCheckinData(res.checkin_ids[i]);
+  let Promises = new Array(habit.checkin_ids.length);
+  for (let i = 0; i < habit.checkin_ids.length; i++) {
+    Promises[i] = getCheckinData(habit.checkin_ids[i]);
   }
 
   // parallel fetching happens here
@@ -78,10 +78,36 @@ export default async function habitID({ params }) {
 
   return (
     <div>
-      <div className="flex items-center">
-        <p className="text-3xl">{res.name}</p>
+      <div className="flex items-center p-2 my-2 w-fit bg-white rounded shadow-sm">
+        <p className="text-3xl">{habit.name}</p>
         <DeleteButton habit_id={params.id} />
       </div>
+      <div className="p-2 my-2 w-fit">
+        <p className="text-xl ">Description</p>
+        <p className="text-md">{habit.description}</p>
+      </div>
+
+      <p className="text-xl mt-3">Weekly Schedule</p>
+      <div className="flex flex-wrap">
+        {days.map((day, i) => {
+          return (
+            <div
+              key={uniqid()}
+              className={
+                "p-5 w-20 text-lg mr-4 mt-3 transition-all ease-linear duration-300 rounded " +
+                (habit.weeklySchedule[i] ? "bg-green-300" : "bg-white")
+              }
+            >
+              {day}
+            </div>
+          );
+        })}
+      </div>
+      <p className="text-xl mt-5 mb-3">
+        Current Streak: {getCurrentStreak() > 1 ? "🔥" : ""}
+        {getCurrentStreak()}
+      </p>
+      {getCheckinForm()}
       <p className="text-xl mt-3">Checkins</p>
       <div className="mt-3 flex flex-wrap">
         {checkinData.map((checkin) => {
@@ -125,27 +151,6 @@ export default async function habitID({ params }) {
           ""
         )}
       </div>
-      <p className="text-xl mt-3">Weekly Schedule</p>
-      <div className="flex flex-wrap">
-        {days.map((day, i) => {
-          return (
-            <div
-              key={uniqid()}
-              className={
-                "p-5 w-20 text-lg mr-4 mt-3 transition-all ease-linear duration-300 rounded " +
-                (res.weeklySchedule[i] ? "bg-green-300" : "bg-white")
-              }
-            >
-              {day}
-            </div>
-          );
-        })}
-      </div>
-      <p className="text-xl mt-5 mb-3">
-        Current Streak: {getCurrentStreak() > 1 ? "🔥" : ""}
-        {getCurrentStreak()}
-      </p>
-      {getCheckinForm()}
     </div>
   );
 }
