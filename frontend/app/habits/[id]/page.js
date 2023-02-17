@@ -1,7 +1,7 @@
 import uniqid from "uniqid";
 import CheckinForm from "./CheckinForm";
-import UndoButton from "./UndoCheckinButton";
 import DeleteButton from "./DeleteHabit";
+import Checkin from "./Checkin";
 
 export default async function habitID({ params }) {
   const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -40,25 +40,6 @@ export default async function habitID({ params }) {
 
   // parallel fetching happens here
   let checkinData = await Promise.all(Promises);
-
-  function getCurrentStreak() {
-    // need to implement this according to chosen schedule
-
-    if (checkinData.length == 0) return 0;
-    if (checkinData.length == 1) return 1;
-    let streak = 1;
-    for (let i = checkinData.length - 1; i >= 1; i--) {
-      let currDate = new Date(checkinData[i].checkinDate);
-      let prevDate = new Date(checkinData[i - 1].checkinDate);
-
-      prevDate.setDate(prevDate.getDate() + 1);
-      if (prevDate.toLocaleDateString() !== currDate.toLocaleDateString()) {
-        break;
-      }
-      streak++;
-    }
-    return streak;
-  }
   function getCheckinForm() {
     if (checkinData.length == 0) {
       return (
@@ -77,12 +58,12 @@ export default async function habitID({ params }) {
   }
 
   return (
-    <div>
-      <div className="flex items-center p-2 my-2 w-fit bg-white rounded shadow-sm">
+    <div className="w-fit h-fit">
+      <div className="flex items-center p-2 my-2 w-fit bg-white rounded shadow">
         <p className="text-3xl">{habit.name}</p>
         <DeleteButton habit_id={params.id} />
       </div>
-      <div className="p-2 my-2 w-fit">
+      <div className="p-2 my-2 w-fit bg-white rounded shadow">
         <p className="text-xl ">Description</p>
         <p className="text-md">{habit.description}</p>
       </div>
@@ -103,45 +84,11 @@ export default async function habitID({ params }) {
           );
         })}
       </div>
-      <p className="text-xl mt-5 mb-3">
-        Current Streak: {getCurrentStreak() > 1 ? "🔥" : ""}
-        {getCurrentStreak()}
-      </p>
       {getCheckinForm()}
       <p className="text-xl mt-3">Checkins</p>
       <div className="mt-3 flex flex-wrap">
         {checkinData.map((checkin) => {
-          return (
-            <div
-              key={uniqid()}
-              className="p-4 rounded bg-white mr-3 w-56 max-h-56"
-            >
-              <p className="text-xs font-semibold text-gray-700/40 ">
-                Checkin Date:{" "}
-                {new Date(checkin.checkinDate).toLocaleDateString()}
-              </p>
-              <p>Notes:</p>
-              <div
-                className={
-                  "overflow-auto w-full h-1/2" +
-                  (checkin.notes == "" ? " flex items-center h-1/3" : "")
-                }
-              >
-                <p
-                  className={
-                    checkin.notes == ""
-                      ? "h-fit w-full text-center text-gray-700/60"
-                      : ""
-                  }
-                >
-                  {checkin.notes}
-                  {checkin.notes == "" ? "No notes" : ""}
-                </p>
-              </div>
-              {/* TO DO: the user can undo checkin ONLY if the checkin date is today  */}
-              <UndoButton checkin_id={checkin._id} />
-            </div>
-          );
+          return <Checkin key={uniqid()} checkin={checkin} />;
         })}
         {checkinData.length == 0 ? (
           <p className="mb-3 text-lg text-gray-600">

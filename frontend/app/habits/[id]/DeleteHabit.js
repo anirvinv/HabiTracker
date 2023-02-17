@@ -18,7 +18,7 @@ export default function DeleteButton({ habit_id }) {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        router.prefetch("/");
+        router.refresh();
         router.replace("/");
       });
   }
@@ -28,15 +28,16 @@ export default function DeleteButton({ habit_id }) {
         onClick={() => {
           setShowPopup(true);
         }}
-        className="p-1 bg-red-500 text-white rounded ml-2 hover:cursor-pointer transition-all duration-100 ease-linear hover:bg-red-700"
+        className="p-1 bg-red-500 text-white rounded ml-2 hover:cursor-pointer 
+        transition-all duration-100 ease-linear hover:bg-red-700"
       >
-        Delete
+        delete
       </div>
       <div className={!showPopup ? "hidden" : ""}>
         <Modal>
-          <div className=" absolute w-60 h-32 rounded bg-white">
+          <div className=" absolute p-4 rounded bg-white">
             <div className="flex flex-col h-full items-center justify-center">
-              <p className="">Are you sure?</p>
+              <p className="mb-3">Are you sure you want to delete?</p>
               <div className="flex items-center justify-center">
                 <div
                   onClick={deleteHabit}

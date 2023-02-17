@@ -85,7 +85,7 @@ export default function CheckinForm({ fetchURL, checkinData }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center">
+      <div className="flex flex-wrap items-center mt-4">
         <button
           disabled={disabled}
           onClick={checkin}

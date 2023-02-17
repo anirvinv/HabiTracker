@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { IoTrashBinSharp } from "react-icons/io5";
 
 export default function UndoButton({ checkin_id }) {
   const router = useRouter();
@@ -27,9 +28,9 @@ export default function UndoButton({ checkin_id }) {
     <button
       disabled={disabled}
       onClick={deleteCheckin}
-      className="text-xs shadow shadow-gray-300 transition-all hover:bg-gray-800 mt-3 p-2 hover:text-white rounded-full mb-1"
+      className="transition-all text-red-500 hover:text-red-600 ml-2"
     >
-      Undo Checkin
+      <IoTrashBinSharp size={30} />
     </button>
   );
 }
