@@ -6,7 +6,7 @@ export default function Checkin({ checkin }) {
   let [show, setShow] = useState(false);
 
   return (
-    <div className="p-4 rounded-lg bg-white mr-3 w-56 max-h-56">
+    <div className="p-4 rounded-lg bg-white mr-3 w-56 max-h-56 relative">
       <div className="flex items-center">
         <p className="h-fit text-lg font-semibold w-full text-white p-1 bg-green-400 rounded-lg shadow text-center">
           {new Date(checkin.checkinDate).toLocaleDateString()}
@@ -29,7 +29,11 @@ export default function Checkin({ checkin }) {
 
 function Notes({ checkin, show }) {
   return (
-    <div className={!show ? "hidden" : ""}>
+    <div
+      className={
+        !show ? "hidden" : "absolute bg-inherit w-full z-10 shadow rounded"
+      }
+    >
       <div
         className={
           "overflow-auto w-full h-20" +

@@ -40,6 +40,10 @@ export default async function habitID({ params }) {
 
   // parallel fetching happens here
   let checkinData = await Promise.all(Promises);
+
+  checkinData.sort(function (checkin1, checkin2) {
+    return new Date(checkin1.checkinDate) - new Date(checkin2.checkinDate);
+  });
   function getCheckinForm() {
     if (checkinData.length == 0) {
       return (

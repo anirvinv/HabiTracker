@@ -1,3 +1,5 @@
+import Habit from "./Habit";
+import uniqid from "uniqid";
 async function getAllCheckins(checkinIDs) {
   // point is to filter by habit id LATER instead of grouping them into subarrays
   let promises = new Array(checkinIDs.length);
@@ -37,20 +39,13 @@ export default async function Streaks() {
     <div className="">
       {habits.map((habit) => {
         return (
-          <div className="flex flex-wrap">
-            <div className="mr-2">{habit.name}</div>
-            {checkin_data
-              .filter((checkin) => {
-                return checkin.habit_id === habit._id;
-              })
-              .map((checkin) => {
-                return (
-                  <div className="mr-2">
-                    {new Date(checkin.checkinDate).toLocaleDateString()}
-                  </div>
-                );
-              })}
-          </div>
+          <Habit
+            key={uniqid()}
+            habit={habit}
+            checkin_data={checkin_data.filter((checkin) => {
+              return checkin.habit_id === habit._id;
+            })}
+          />
         );
       })}
     </div>
