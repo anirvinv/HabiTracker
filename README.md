@@ -16,6 +16,8 @@ Track your habits and checkin everyday to maintain the streak.
 Add Highlights in streaks for top 3 longest streaks if the user even has 3 set of streaks
 Stop habit feature: user cant checkin anymore, but can see the checkin history for a habit they stopped doing
 
+Design idea for streaks: add chains from checkin to checkin to symbolize "don't break the chain"
+
 __ISSUES__:
 If the checkin button is clicked multiple times very quickly, the browser doesnt have enough time to check that the user already signed in.
 

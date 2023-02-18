@@ -10,16 +10,12 @@ export default function Habit({ habit, checkin_data }) {
     let idx1 = date1.getDay(),
       idx2 = date2.getDay();
     let idx = (idx1 + 1) % 7;
-    console.log(`${idx1}, ${idx2}`);
     while (idx != idx2) {
       if (ws[idx]) return false;
       idx++;
       idx %= 7;
     }
     let res = Math.ceil((date2 - date1) / (1000 * 3600 * 24)) < 7;
-    console.log(
-      `${date1.toLocaleDateString()} ${date2.toLocaleDateString()} res: ${res}`
-    );
     return res;
   }
 
@@ -49,6 +45,15 @@ export default function Habit({ habit, checkin_data }) {
     });
   }
 
+  function getMostRecentScheduledDay() {
+    let d = new Date();
+    while (!habit.weeklySchedule[d.getDay()]) {
+      d.setDate(d.getDate() - 1);
+    }
+    console.log(d);
+    return d.toLocaleDateString();
+  }
+
   return (
     <div className="flex flex-wrap">
       {/* {JSON.stringify(checkin_data[0])} */}
@@ -58,10 +63,34 @@ export default function Habit({ habit, checkin_data }) {
         </div>
         {getStreaks().map((streak_arr) => {
           return (
-            <div className="flex flex-wrap text-white bg-gradient-to-r from-teal-700 to-emerald-500 shadow mr-2 my-2 p-2 rounded">
-              {streak_arr.map((streak) => {
-                return <div className="mx-2">{streak}</div>;
-              })}
+            <div key={uniqid()}>
+              {streak_arr.includes(getMostRecentScheduledDay()) ? (
+                <div className="px-2">Current:</div>
+              ) : (
+                ""
+              )}
+              <div className="flex flex-wrap bg-gradient-to-r from-orange-200 to-red-200 shadow mr-2 my-2 p-2 rounded">
+                {streak_arr.map((streak, i) => {
+                  return (
+                    <div
+                      key={uniqid()}
+                      className={
+                        "mx-1 font-semibold px-1 my-1 shadow w-[5.5rem] text-center " +
+                        ((i == 0 || i == streak_arr.length - 1) &&
+                        streak_arr.length != 2
+                          ? `text-white bg-gradient-to-r from-orange-500 to-red-500 ${
+                              i == 0 ? "rounded-l-full" : ""
+                            } ${
+                              i == streak_arr.length - 1 ? "rounded-r-full" : ""
+                            }`
+                          : "text-orange-800 ")
+                      }
+                    >
+                      {streak}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           );
         })}
