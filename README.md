@@ -12,18 +12,18 @@ Track your habits and checkin everyday to maintain the streak.
 5. Yearly view of habit checkins, similar to github activity log
 
 ## To Do:
-\#4: Calculate streaks based on habit schedule
 
-Add all streaks and highlights in the streaks tab. So anytime there is a streak even of length 2, show it in that tab for each habit
-
-Implement: Stopped habits feature where user cant checkin, but can see the checkin history
+Add Highlights in streaks for top 3 longest streaks if the user even has 3 set of streaks
+Stop habit feature: user cant checkin anymore, but can see the checkin history for a habit they stopped doing
 
 __ISSUES__:
 If the checkin button is clicked multiple times very quickly, the browser doesnt have enough time to check that the user already signed in.
-^^ Solution: make a checkins state and also for 
 
 Caching API calls for SSR is not working as intended.
 
 ![alt text](frontend/public/s1.jpg)
 ![alt text](frontend/public/s2.jpg)
 ![alt text](frontend/public/s3.jpg)
+
+Streaks: Still in progress in terms of design, but works with weekly schedule now
+![alt text](frontend/public/s4.jpg)
