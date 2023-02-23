@@ -3,8 +3,6 @@ import uniqid from "uniqid";
 import YearlyView from "./YearlyView";
 
 export default async function Page() {
-  const habits = await getHabitData();
-
   async function getHabitData() {
     console.log(process.env.API_URL);
     const res = await fetch(process.env.API_URL + "/habit/all", {
@@ -20,14 +18,19 @@ export default async function Page() {
 
     return res.json();
   }
+  const habits = await getHabitData();
   return (
-    <div className="flex flex-col items-center">
-      {habits.map((habit) => {
+    <div className="flex flex-col">
+      {habits.map((habit, i) => {
         return (
-          <div key={uniqid()} className="flex flex-wrap">
+          <div key={uniqid()} className="flex flex-wrap items-end">
             <div className="w-fit">
               <Link href={`/habits/${habit._id}`}>
-                <div className="p-4 w-fit rounded bg-white mr-6 mt-6">
+                <div
+                  className={
+                    "p-4 w-fit rounded bg-white mr-6 " + (i != 0 ? "mt-6" : "")
+                  }
+                >
                   <p className="text-lg">{habit.name}</p>
                   <p className="text-sm py-2 text-gray-800/80">
                     Weekly schedule

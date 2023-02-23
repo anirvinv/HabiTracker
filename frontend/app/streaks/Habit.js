@@ -15,8 +15,7 @@ export default function Habit({ habit, checkin_data }) {
       idx++;
       idx %= 7;
     }
-    let res = Math.ceil((date2 - date1) / (1000 * 3600 * 24)) < 7;
-    return res;
+    return Math.ceil((date2 - date1) / (1000 * 3600 * 24)) < 7;
   }
 
   function getStreaks() {
@@ -58,32 +57,29 @@ export default function Habit({ habit, checkin_data }) {
     <div className="flex flex-wrap">
       {/* {JSON.stringify(checkin_data[0])} */}
       <div className="my-2">
-        <div className="mr-2 p-2 bg-white w-fit rounded shadow">
+        <div className="mr-2 p-2 text-xl bg-white w-fit rounded shadow">
           {habit.name}
         </div>
         {getStreaks().map((streak_arr) => {
           return (
             <div key={uniqid()}>
-              {streak_arr.includes(getMostRecentScheduledDay()) ? (
-                <div className="px-2">Current:</div>
-              ) : (
-                ""
-              )}
-              <div className="flex flex-wrap bg-gradient-to-r from-orange-200 to-red-200 shadow mr-2 my-2 p-2 rounded">
+              <div className="flex flex-wrap bg-gradient-to-r from-emerald-300 to-green-300/80 shadow mr-2 my-2 p-2 rounded">
                 {streak_arr.map((streak, i) => {
                   return (
                     <div
                       key={uniqid()}
                       className={
                         "mx-1 font-semibold px-1 my-1 shadow w-[5.5rem] text-center " +
-                        ((i == 0 || i == streak_arr.length - 1) &&
-                        streak_arr.length != 2
-                          ? `text-white bg-gradient-to-r from-orange-500 to-red-500 ${
-                              i == 0 ? "rounded-l-full" : ""
-                            } ${
+                        (i == 0 || i == streak_arr.length - 1
+                          ? `text-white bg-gradient-to-r ${
+                              new Date(streak).toLocaleDateString() ==
+                              new Date().toLocaleDateString()
+                                ? "from-yellow-500 to-orange-500"
+                                : "from-emerald-500 to-green-500"
+                            } ${i == 0 ? "rounded-l-full" : ""} ${
                               i == streak_arr.length - 1 ? "rounded-r-full" : ""
                             }`
-                          : "text-orange-800 ")
+                          : "text-green-900")
                       }
                     >
                       {streak}

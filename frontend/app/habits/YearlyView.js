@@ -144,7 +144,12 @@ export default function YearlyView({ checkinIDs, habit }) {
                       className={
                         "w-2.5 h-2.5 " +
                         (checkinDates.includes(day)
-                          ? "bg-emerald-500"
+                          ? `bg-gradient-to-r ${
+                              new Date().toLocaleDateString() ==
+                              new Date(day).toLocaleDateString()
+                                ? "from-yellow-400 to-orange-400"
+                                : `from-emerald-400 to-teal-400/70`
+                            }`
                           : "bg-slate-300/50") +
                         ` rounded-full`
                       }
